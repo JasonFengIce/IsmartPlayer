@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.ismartv.ismartplayer.data.AccountPreferences;
 import cn.ismartv.ismartplayer.data.ChannelEntity;
 import cn.ismartv.log.interceptor.HttpLoggingInterceptor;
 import okhttp3.OkHttpClient;
@@ -30,6 +31,7 @@ public class HttpApi {
 
     public Retrofit resetAdapter_SKY;
 
+
     public static HttpApi getInstance() {
         return ourInstance;
     }
@@ -46,7 +48,7 @@ public class HttpApi {
 
         resetAdapter_SKY = new Retrofit.Builder()
                 .client(client)
-                .baseUrl(appendProtocol("skytest.tvxio.com/v3_0/SKY2/tou"))
+                .baseUrl(appendProtocol(AccountPreferences.getSkyApiHost()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

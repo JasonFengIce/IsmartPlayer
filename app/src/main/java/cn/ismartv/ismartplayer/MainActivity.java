@@ -1,29 +1,30 @@
 package cn.ismartv.ismartplayer;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ismartv.activator.IsmartvActivator;
+import cn.ismartv.activator.data.Result;
 import cn.ismartv.ismartplayer.core.HttpApi;
+import cn.ismartv.ismartplayer.data.AccountPreferences;
 import cn.ismartv.ismartplayer.data.ChannelEntity;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String DEFAULT_PEATH_HOST = "http://sky.tvxio.com";
+
     @BindView(R.id.channel_indicator)
     RecyclerView mChannelIndicatorLayout;
 
@@ -34,7 +35,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        fetchChannel();
+        active();
+    }
+
+    private void active() {
+        new IsmartvActivator(this, new IsmartvActivator.Callback() {
+            @Override
+            public void onSuccess(Result result) {
+                AccountPreferences.setSkyApiHost(result.getDomain());
+                fetchChannel();
+            }
+
+            @Override
+            public void onFailure(String msg) {
+
+            }
+        }).execute();
     }
 
 
