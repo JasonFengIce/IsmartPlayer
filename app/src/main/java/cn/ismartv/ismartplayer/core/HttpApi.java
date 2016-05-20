@@ -36,6 +36,11 @@ public class HttpApi {
         return ourInstance;
     }
 
+
+    public OkHttpClient getClient() {
+        return client;
+    }
+
     private HttpApi() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -51,8 +56,6 @@ public class HttpApi {
                 .baseUrl(appendProtocol(AccountPreferences.getSkyApiHost()))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
-
     }
 
 
@@ -70,7 +73,7 @@ public class HttpApi {
     }
 
     public interface Channels {
-        @GET("/api/tv/channels/")
+        @GET("api/tv/channels/")
         Call<ArrayList<ChannelEntity>> doRequest(
         );
     }

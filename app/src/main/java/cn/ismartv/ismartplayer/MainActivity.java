@@ -1,6 +1,10 @@
 package cn.ismartv.ismartplayer;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +22,7 @@ import cn.ismartv.activator.data.Result;
 import cn.ismartv.ismartplayer.core.HttpApi;
 import cn.ismartv.ismartplayer.data.AccountPreferences;
 import cn.ismartv.ismartplayer.data.ChannelEntity;
+import cn.ismartv.ismartplayer.ui.fragment.ChannelPagerFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.channel_indicator)
     RecyclerView mChannelIndicatorLayout;
+
+    @BindView(R.id.channel_pager)
+    ViewPager channelPager;
 
     private ArrayList<ChannelEntity> mChannelEntities;
 
@@ -50,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(String msg) {
 
             }
-        }).execute();
+        }, DEFAULT_PEATH_HOST).execute();
     }
 
 
@@ -61,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<ArrayList<ChannelEntity>> call, Response<ArrayList<ChannelEntity>> response) {
                 if (response.body() != null) {
                     mChannelEntities = response.body();
-                    fillChannelIndicatorLayout();
+                    fillChannelPager(mChannelEntities);
                 }
             }
 
@@ -70,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void fillChannelPager(ArrayList<ChannelEntity> channelEntities) {
+        channelPager.setAdapter(new ChannelPagerAdapter(getSupportFragmentManager(), channelEntities));
     }
 
     private void fillChannelIndicatorLayout() {
@@ -108,4 +120,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class ChannelPagerAdapter extends FragmentPagerAdapter {
+        private ArrayList<ChannelEntity> channelEntities;
+
+        public ChannelPagerAdapter(FragmentManager fm, ArrayList<ChannelEntity> channelEntities) {
+            super(fm);
+            this.channelEntities = channelEntities;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return ChannelPagerFragment.newInstance(channelEntities.get(position));
+        }
+
+        @Override
+        public int getCount() {
+            return channelEntities.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return (mChannelEntities.get(position).getName());
+        }
+    }
 }
