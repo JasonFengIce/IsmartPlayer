@@ -15,6 +15,8 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import timber.log.Timber;
 
 /**
@@ -75,6 +77,16 @@ public class HttpApi {
     public interface Channels {
         @GET("api/tv/channels/")
         Call<ArrayList<ChannelEntity>> doRequest(
+        );
+    }
+
+    public interface ClipInfo {
+        @GET("api/clip/{pk}/")
+        Call<ResponseBody> doRequest(
+                @Path("pk") String pk,
+                @Query("device_token") String device_token,
+                @Query("sign") String sign,
+                @Query("code") String code
         );
     }
 }
