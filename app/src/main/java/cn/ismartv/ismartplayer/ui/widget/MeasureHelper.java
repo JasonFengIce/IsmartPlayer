@@ -22,7 +22,8 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 
-import tv.danmaku.ijk.media.example.R;
+import cn.ismartv.ismartplayer.R;
+
 
 public final class MeasureHelper {
     private WeakReference<View> mWeakView;

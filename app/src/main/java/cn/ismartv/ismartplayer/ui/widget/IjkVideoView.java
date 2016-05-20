@@ -43,9 +43,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import tv.danmaku.ijk.media.example.R;
-import tv.danmaku.ijk.media.example.application.Settings;
-import tv.danmaku.ijk.media.example.services.MediaPlayerService;
+import cn.ismartv.ijkplayer.application.Settings;
+import cn.ismartv.ijkplayer.services.MediaPlayerService;
+import cn.ismartv.ismartplayer.R;
 import tv.danmaku.ijk.media.exo.IjkExoMediaPlayer;
 import tv.danmaku.ijk.media.player.AndroidMediaPlayer;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
