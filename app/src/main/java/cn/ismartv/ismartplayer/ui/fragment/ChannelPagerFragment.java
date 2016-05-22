@@ -22,9 +22,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ismartv.ismartplayer.AESDemo;
 import cn.ismartv.ismartplayer.BuildUrl;
 import cn.ismartv.ismartplayer.R;
 import cn.ismartv.ismartplayer.core.HttpApi;
+import cn.ismartv.ismartplayer.data.AccountPreferences;
 import cn.ismartv.ismartplayer.data.ChannelEntity;
 import cn.ismartv.ismartplayer.data.HomePageEntity;
 import cn.ismartv.ismartplayer.data.ItemEntity;
@@ -167,7 +169,7 @@ public class ChannelPagerFragment extends Fragment {
     private void fetchClipInfo(String pk) {
         BuildUrl buildUrl = BuildUrl.getInstance();
         Retrofit retrofit = HttpApi.getInstance().resetAdapter_SKY;
-        retrofit.create(HttpApi.ClipInfo.class).doRequest(pk, buildUrl.getSN(), buildUrl.getAccessToken(), buildUrl.getSign()).enqueue(new retrofit2.Callback<ResponseBody>() {
+        retrofit.create(HttpApi.ClipInfo.class).doRequest(pk, AccountPreferences.getDeviceToken(), getAES(AccountPreferences.getSnToken(), ""), "1").enqueue(new retrofit2.Callback<ResponseBody>() {
             @Override
             public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
@@ -180,10 +182,11 @@ public class ChannelPagerFragment extends Fragment {
         });
     }
 
-    private static String getAES(String access_token) {
+    private static String getAES(String sn, String access_token) {
+         String keyCrypt = "smartvdefaultkey";
         String result = null;
         String contents = (new StringBuilder(String.valueOf((new Date())
-                .getTime()))).append(mySN).toString();
+                .getTime()))).append(sn).toString();
         if (access_token != null && access_token.length() > 0) {
             if (access_token.length() > 15) {
                 result = AESDemo.encrypttoStr(contents,
