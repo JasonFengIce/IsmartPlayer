@@ -42,6 +42,8 @@ import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.HttpApi;
 import tv.ismar.daisy.data.AccountPreferences;
 import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.data.ChannelListEntity;
+import tv.ismar.daisy.data.ChannelSectionEntity;
 import tv.ismar.daisy.data.ClipInfoEntity;
 import tv.ismar.daisy.data.HomePageEntity;
 import tv.ismar.daisy.data.ItemEntity;
@@ -87,6 +89,7 @@ public class ChannelPagerFragment extends Fragment {
 
         ChannelEntity channelEntity = new Gson().fromJson(getArguments().getString("channel"), ChannelEntity.class);
         fetchChannelHomepage(channelEntity.getHomepage_url());
+        fetchListUrl(channelEntity.getUrl());
     }
 
 
@@ -118,6 +121,55 @@ public class ChannelPagerFragment extends Fragment {
             }
         });
     }
+
+    private void fetchListUrl(String api) {
+
+        OkHttpClient okHttpClient = HttpApi.getInstance().getClient();
+
+        Request request = new Request.Builder()
+                .url(api)
+                .build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.body() != null) {
+                    ChannelListEntity[] channelListEntities = new Gson().fromJson(response.body().string(), ChannelListEntity[].class);
+                    for (ChannelListEntity entity : channelListEntities) {
+                        fetchSection(entity.getUrl());
+                    }
+                }
+            }
+        });
+
+    }
+
+    private void fetchSection(String api) {
+        OkHttpClient okHttpClient = HttpApi.getInstance().getClient();
+
+        final Request request = new Request.Builder()
+                .url(api)
+                .build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.body() != null) {
+                    ChannelSectionEntity channelSectionEntity = new Gson().fromJson(response.body().string(), ChannelSectionEntity.class);
+
+                }
+            }
+        });
+    }
+
 
     private void fillChannelLayout(HomePageEntity homePageEntity) {
 
