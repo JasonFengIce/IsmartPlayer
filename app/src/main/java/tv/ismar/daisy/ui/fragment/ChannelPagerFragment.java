@@ -1,5 +1,6 @@
 package tv.ismar.daisy.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,26 +20,31 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ismartv.activator.core.rsa.Coder;
+import cn.ismartv.activator.core.rsa.SkyAESTool2;
+import cn.ismartv.ijkplayer.activities.VideoActivity;
+import cn.ismartv.iqiyiplayer.SdkTestActivity;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Retrofit;
 import tv.ismar.daisy.AESDemo;
 import tv.ismar.daisy.BuildUrl;
 import tv.ismar.daisy.R;
 import tv.ismar.daisy.core.HttpApi;
 import tv.ismar.daisy.data.AccountPreferences;
 import tv.ismar.daisy.data.ChannelEntity;
+import tv.ismar.daisy.data.ClipInfoEntity;
 import tv.ismar.daisy.data.HomePageEntity;
 import tv.ismar.daisy.data.ItemEntity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
 
 /**
  * Created by huibin on 5/20/16.
@@ -171,18 +178,28 @@ public class ChannelPagerFragment extends Fragment {
     private void fetchClipInfo(String pk) {
         BuildUrl buildUrl = BuildUrl.getInstance();
         Retrofit retrofit = HttpApi.getInstance().resetAdapter_SKY;
-        retrofit.create(HttpApi.ClipInfo.class).doRequest(pk, AccountPreferences.getDeviceToken(), getAES(AccountPreferences.getSnToken(), ""), "1").enqueue(new retrofit2.Callback<ResponseBody>() {
+        retrofit.create(HttpApi.ClipInfo.class).doRequest(pk, AccountPreferences.getDeviceToken(), getAES(AccountPreferences.getSnToken(), ""), "1").enqueue(new retrofit2.Callback<ClipInfoEntity>() {
             @Override
-            public void onResponse(retrofit2.Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                try {
-                    Log.i(TAG, response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
+            public void onResponse(retrofit2.Call<ClipInfoEntity> call, retrofit2.Response<ClipInfoEntity> response) {
+                ClipInfoEntity clipInfoEntity = response.body();
+
+                if (!TextUtils.isEmpty(clipInfoEntity.getIqiyi_4_0())) {
+                    Intent intent = new Intent();
+                    intent.setClass(getContext(), SdkTestActivity.class);
+                    intent.putExtra("clip_info", clipInfoEntity.getIqiyi_4_0());
+                    startActivity(intent);
+                } else {
+                    String url = aesDecrypt(clipInfoEntity.getBestUrl(), AccountPreferences.getDeviceToken());
+                    Log.i(TAG, "url: " + url);
+
+                    VideoActivity.intentTo(getContext(), url, url);
                 }
+
             }
 
+
             @Override
-            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+            public void onFailure(retrofit2.Call<ClipInfoEntity> call, Throwable t) {
 
             }
         });
@@ -230,7 +247,7 @@ public class ChannelPagerFragment extends Fragment {
                 if (response.body() != null) {
 
                     ItemEntity itemEntity = new Gson().fromJson(response.body().string(), ItemEntity.class);
-                    fetchClipInfo(String.valueOf(itemEntity.getPk()));
+                    fetchClipInfo(String.valueOf(itemEntity.getClip().getPk()));
 //                    new Handler(Looper.getMainLooper()).post(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -240,5 +257,17 @@ public class ChannelPagerFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private String aesDecrypt(String content, String key) {
+        String result = "";
+        byte[] base64;
+        try {
+            base64 = Coder.UrlSafeBase64_decode(content);
+            result = SkyAESTool2.decrypt(key.substring(0, 16), base64);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

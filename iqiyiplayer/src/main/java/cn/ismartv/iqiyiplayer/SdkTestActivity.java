@@ -126,10 +126,15 @@ public class SdkTestActivity extends Activity implements OnClickListener, OnChec
     private Surface mSurface;
     private IMedia mCurrentVideo;
 
+    private String clipInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+
+        clipInfo = getIntent().getStringExtra("clip_info");
+
         setContentView(R.layout.activity_sdk_test);
         initViews();
 
@@ -418,9 +423,15 @@ public class SdkTestActivity extends Activity implements OnClickListener, OnChec
         }
         //login, 同步操作, 有网络接口调用, 可能耗时, 请注意. 初始只需调用一次, 登录成功后一直有效, 如需登出, 请调用logout
 //        PlaySdk.getInstance().login("123456789012345678901234567890");
-        PlayerSdk.getInstance().login("9806133a1589d382354c5bc436da366f");
-        SdkVideo video = new SdkVideo("203077201", "445739600", false);
+        String strs[] = clipInfo.split(":");
+
+//        PlayerSdk.getInstance().login("9806133a1589d382354c5bc436da366f");
+//        SdkVideo video = new SdkVideo("203077201", "445739600", false);
 //        SdkVideo video = new SdkVideo("101160800", "101160800", true);
+
+        PlayerSdk.getInstance().login(strs[2]);
+        SdkVideo video = new SdkVideo(strs[0], strs[1], false);
+
         startPlayMovie(video);
 
 //        //轮播节目播放

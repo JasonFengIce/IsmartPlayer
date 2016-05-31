@@ -1,6 +1,5 @@
 package tv.ismar.daisy;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,14 +14,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ismartv.activator.IsmartvActivator;
 import cn.ismartv.activator.data.Result;
-import cn.ismartv.iqiyiplayer.SdkTestActivity;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import tv.ismar.daisy.core.HttpApi;
 import tv.ismar.daisy.data.AccountPreferences;
 import tv.ismar.daisy.data.ChannelEntity;
 import tv.ismar.daisy.ui.fragment.ChannelPagerFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String DEFAULT_PEATH_HOST = "http://sky.tvxio.com";
@@ -43,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
         active();
 
 
-        Intent intent = new Intent();
-        intent.setClass(this, SdkTestActivity.class);
-        startActivity(intent);
 
     }
 

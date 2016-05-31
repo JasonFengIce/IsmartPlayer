@@ -18,6 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import timber.log.Timber;
+import tv.ismar.daisy.data.ClipInfoEntity;
 
 /**
  * Created by huaijie on 5/17/16.
@@ -82,7 +83,7 @@ public class HttpApi {
 
     public interface ClipInfo {
         @GET("api/clip/{pk}/")
-        Call<ResponseBody> doRequest(
+        Call<ClipInfoEntity> doRequest(
                 @Path("pk") String pk,
                 @Query("device_token") String device_token,
                 @Query("sign") String sign,
