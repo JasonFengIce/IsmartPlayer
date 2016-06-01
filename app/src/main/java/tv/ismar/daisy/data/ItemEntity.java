@@ -56,6 +56,24 @@ public class ItemEntity {
     private Attributes attributes;
     @SerializedName("item_pk")
     private int itemPk;
+    private String list_url;
+    private String item_url;
+
+    public String getItem_url() {
+        return item_url;
+    }
+
+    public void setItem_url(String item_url) {
+        this.item_url = item_url;
+    }
+
+    public String getList_url() {
+        return list_url;
+    }
+
+    public void setList_url(String list_url) {
+        this.list_url = list_url;
+    }
 
     public void setClip(Clip clip) {
         this.clip = clip;

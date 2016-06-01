@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,13 +55,16 @@ import tv.ismar.daisy.data.ItemEntity;
 public class ChannelPagerFragment extends Fragment {
 
     private static final String TAG = "ChannelPagerFragment";
+    private static final String DEFAULT_LIST_URL = "http://res.tvxio.bestv.com.cn/media/upload/20160321/36c8886fd5b4163ae48534a72ec3a555.png";
     @BindView(R.id.channel_list)
     RecyclerView channelListLayout;
 
 
-    private List<HomePageEntity.Posters> mPosters;
+    //    private List<HomePageEntity.Posters> mPosters;
+    private List<ItemEntity> mSectionList;
 
-    private ChannelListAdapter mChannelListAdapter;
+    //    private ChannelListAdapter mChannelListAdapter;
+    private ChannelSectionListAdapter mChannelSectionListAdapter;
 
     public static ChannelPagerFragment newInstance(ChannelEntity channelEntity) {
         ChannelPagerFragment newFragment = new ChannelPagerFragment();
@@ -84,8 +88,11 @@ public class ChannelPagerFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         channelListLayout.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false));
-        mChannelListAdapter = new ChannelListAdapter();
-        channelListLayout.setAdapter(mChannelListAdapter);
+//        mChannelListAdapter = new ChannelListAdapter();
+//        channelListLayout.setAdapter(mChannelListAdapter);
+        mChannelSectionListAdapter = new ChannelSectionListAdapter();
+        channelListLayout.setAdapter(mChannelSectionListAdapter);
+
 
         ChannelEntity channelEntity = new Gson().fromJson(getArguments().getString("channel"), ChannelEntity.class);
         fetchChannelHomepage(channelEntity.getHomepage_url());
@@ -109,14 +116,14 @@ public class ChannelPagerFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.body() != null) {
 
-                    HomePageEntity homePageEntity = new Gson().fromJson(response.body().string(), HomePageEntity.class);
-                    mPosters = homePageEntity.getPosters();
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mChannelListAdapter.notifyDataSetChanged();
-                        }
-                    });
+//                    HomePageEntity homePageEntity = new Gson().fromJson(response.body().string(), HomePageEntity.class);
+//                    mPosters = homePageEntity.getPosters();
+//                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            mChannelListAdapter.notifyDataSetChanged();
+//                        }
+//                    });
                 }
             }
         });
@@ -139,6 +146,7 @@ public class ChannelPagerFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.body() != null) {
                     ChannelListEntity[] channelListEntities = new Gson().fromJson(response.body().string(), ChannelListEntity[].class);
+                    mSectionList = new ArrayList<ItemEntity>();
                     for (ChannelListEntity entity : channelListEntities) {
                         fetchSection(entity.getUrl());
                     }
@@ -164,8 +172,16 @@ public class ChannelPagerFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.body() != null) {
                     ChannelSectionEntity channelSectionEntity = new Gson().fromJson(response.body().string(), ChannelSectionEntity.class);
-
+                    if (channelSectionEntity != null && channelSectionEntity.getObjects() != null)
+                        mSectionList.addAll(channelSectionEntity.getObjects());
                 }
+
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mChannelSectionListAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
     }
@@ -176,7 +192,59 @@ public class ChannelPagerFragment extends Fragment {
     }
 
 
-    class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ChannelListHolder> implements View.OnClickListener {
+//    class ChannelListAdapter extends RecyclerView.Adapter<ChannelListAdapter.ChannelListHolder> implements View.OnClickListener {
+//        @Override
+//        public ChannelListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//            View itemView = LayoutInflater.from(
+//                    getActivity()).inflate(R.layout.item_channel_list, parent,
+//                    false);
+//            itemView.setOnClickListener(this);
+//            ChannelListHolder holder = new ChannelListHolder(itemView);
+//            return holder;
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(ChannelListHolder holder, int position) {
+//            if (mPosters != null) {
+//                holder.itemView.setTag(mPosters.get(position));
+//                holder.title.setText(mPosters.get(position).getTitle());
+//                Glide.with(ChannelPagerFragment.this).load(mPosters.get(position).getCustom_image()).into(holder.image);
+//            }
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            if (mPosters != null) {
+//                return mPosters.size();
+//            }
+//            return 0;
+//        }
+//
+//        @Override
+//        public void onClick(View v) {
+//            HomePageEntity.Posters posters = ((HomePageEntity.Posters) v.getTag());
+//            fetchItemInfo(posters.getUrl());
+//        }
+//
+//        class ChannelListHolder extends RecyclerView.ViewHolder {
+//            @BindView(R.id.title)
+//            TextView title;
+//
+//            @BindView(R.id.image)
+//            ImageView image;
+//
+//            View itemView;
+//
+//            public ChannelListHolder(View view) {
+//                super(view);
+//                ButterKnife.bind(this, view);
+//                itemView = view;
+//            }
+//        }
+//    }
+
+
+    class ChannelSectionListAdapter extends RecyclerView.Adapter<ChannelSectionListAdapter.ChannelListHolder> implements View.OnClickListener {
         @Override
         public ChannelListHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(
@@ -189,25 +257,35 @@ public class ChannelPagerFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ChannelListHolder holder, int position) {
-            if (mPosters != null) {
-                holder.itemView.setTag(mPosters.get(position));
-                holder.title.setText(mPosters.get(position).getTitle());
-                Glide.with(ChannelPagerFragment.this).load(mPosters.get(position).getCustom_image()).into(holder.image);
+            if (mSectionList != null) {
+                holder.itemView.setTag(mSectionList.get(position));
+                holder.title.setText(mSectionList.get(position).getTitle());
+
+                String listUrl = mSectionList.get(position).getList_url();
+                String postUrl = mSectionList.get(position).getPosterUrl();
+                String imageUrl;
+                if (!listUrl.equals(DEFAULT_LIST_URL) ){
+                    imageUrl = listUrl;
+                }else {
+                    imageUrl = postUrl;
+                }
+
+                Glide.with(ChannelPagerFragment.this).load(imageUrl).into(holder.image);
             }
         }
 
         @Override
         public int getItemCount() {
-            if (mPosters != null) {
-                return mPosters.size();
+            if (mSectionList != null) {
+                return mSectionList.size();
             }
             return 0;
         }
 
         @Override
         public void onClick(View v) {
-            HomePageEntity.Posters posters = ((HomePageEntity.Posters) v.getTag());
-            fetchItemInfo(posters.getUrl());
+            ItemEntity posters = (ItemEntity) v.getTag();
+            fetchItemInfo(posters.getItem_url());
         }
 
         class ChannelListHolder extends RecyclerView.ViewHolder {
