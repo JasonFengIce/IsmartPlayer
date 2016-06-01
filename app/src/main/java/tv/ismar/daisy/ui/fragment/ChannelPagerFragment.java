@@ -95,7 +95,7 @@ public class ChannelPagerFragment extends Fragment {
 
 
         ChannelEntity channelEntity = new Gson().fromJson(getArguments().getString("channel"), ChannelEntity.class);
-        fetchChannelHomepage(channelEntity.getHomepage_url());
+//        fetchChannelHomepage(channelEntity.getHomepage_url());
         fetchListUrl(channelEntity.getUrl());
     }
 
