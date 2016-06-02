@@ -79,6 +79,7 @@ public class ChannelPagerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mSectionList = new ArrayList<>();
         View fragmentView = inflater.inflate(R.layout.fragment_channel, container, false);
         ButterKnife.bind(this, fragmentView);
         return fragmentView;
@@ -257,7 +258,7 @@ public class ChannelPagerFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ChannelListHolder holder, int position) {
-            if (mSectionList != null) {
+            if (mSectionList != null && !mSectionList.isEmpty()) {
                 holder.itemView.setTag(mSectionList.get(position));
                 holder.title.setText(mSectionList.get(position).getTitle());
 
