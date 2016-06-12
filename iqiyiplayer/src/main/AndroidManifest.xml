@@ -11,6 +11,7 @@
         <activity
             android:name="cn.ismartv.iqiyiplayer.SdkTestActivity"
             android:label="@string/app_name"
+            android:screenOrientation="landscape"
             android:theme="@style/notitle">
         </activity>
         <activity
