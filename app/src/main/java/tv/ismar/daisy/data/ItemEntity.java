@@ -48,7 +48,7 @@ public class ItemEntity {
     private int episode;
     private String title;
     private String caption;
-    private List<String> points;
+    private List<Point> points;
     @SerializedName("publish_date")
     private String publishDate;
     @SerializedName("is_complex")
@@ -75,156 +75,156 @@ public class ItemEntity {
         this.list_url = list_url;
     }
 
-    public void setClip(Clip clip) {
-        this.clip = clip;
-    }
-
     public Clip getClip() {
         return clip;
     }
 
-    public void setFocus(String focus) {
-        this.focus = focus;
+    public void setClip(Clip clip) {
+        this.clip = clip;
     }
 
     public String getFocus() {
         return focus;
     }
 
-    public void setSubitemShow(String subitemShow) {
-        this.subitemShow = subitemShow;
+    public void setFocus(String focus) {
+        this.focus = focus;
     }
 
     public String getSubitemShow() {
         return subitemShow;
     }
 
-    public void setIs3d(boolean is3d) {
-        this.is3d = is3d;
+    public void setSubitemShow(String subitemShow) {
+        this.subitemShow = subitemShow;
     }
 
     public boolean getIs3d() {
         return is3d;
     }
 
-    public void setContentModel(String contentModel) {
-        this.contentModel = contentModel;
+    public void setIs3d(boolean is3d) {
+        this.is3d = is3d;
     }
 
     public String getContentModel() {
         return contentModel;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setContentModel(String contentModel) {
+        this.contentModel = contentModel;
     }
 
     public String getLogo() {
         return logo;
     }
 
-    public void setDetailUrl(String detailUrl) {
-        this.detailUrl = detailUrl;
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public String getDetailUrl() {
         return detailUrl;
     }
 
-    public void setQuality(int quality) {
-        this.quality = quality;
+    public void setDetailUrl(String detailUrl) {
+        this.detailUrl = detailUrl;
     }
 
     public int getQuality() {
         return quality;
     }
 
-    public void setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+    public void setQuality(int quality) {
+        this.quality = quality;
     }
 
     public int getRatingCount() {
         return ratingCount;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public String getSource() {
         return source;
     }
 
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getVendor() {
         return vendor;
     }
 
-    public void setAdletUrl(String adletUrl) {
-        this.adletUrl = adletUrl;
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
     }
 
     public String getAdletUrl() {
         return adletUrl;
     }
 
-    public void setBeanScore(String beanScore) {
-        this.beanScore = beanScore;
+    public void setAdletUrl(String adletUrl) {
+        this.adletUrl = adletUrl;
     }
 
     public String getBeanScore() {
         return beanScore;
     }
 
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
+    public void setBeanScore(String beanScore) {
+        this.beanScore = beanScore;
     }
 
     public String getPosterUrl() {
         return posterUrl;
     }
 
-    public void setPk(int pk) {
-        this.pk = pk;
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     public int getPk() {
         return pk;
     }
 
-    public void setVerticalUrl(String verticalUrl) {
-        this.verticalUrl = verticalUrl;
+    public void setPk(int pk) {
+        this.pk = pk;
     }
 
     public String getVerticalUrl() {
         return verticalUrl;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setVerticalUrl(String verticalUrl) {
+        this.verticalUrl = verticalUrl;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<String> getTags() {
         return tags;
     }
 
-    public void setRatingAverage(String ratingAverage) {
-        this.ratingAverage = ratingAverage;
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     public String getRatingAverage() {
         return ratingAverage;
+    }
+
+    public void setRatingAverage(String ratingAverage) {
+        this.ratingAverage = ratingAverage;
     }
 
     public SubItem[] getSubitems() {
@@ -235,108 +235,108 @@ public class ItemEntity {
         this.subitems = subitems;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
-    }
-
     public boolean getFinished() {
         return finished;
     }
 
-    public void setLiveVideo(boolean liveVideo) {
-        this.liveVideo = liveVideo;
+    public void setFinished(boolean finished) {
+        this.finished = finished;
     }
 
     public boolean getLiveVideo() {
         return liveVideo;
     }
 
-    public void setThumbUrl(String thumbUrl) {
-        this.thumbUrl = thumbUrl;
+    public void setLiveVideo(boolean liveVideo) {
+        this.liveVideo = liveVideo;
     }
 
     public String getThumbUrl() {
         return thumbUrl;
     }
 
-    public void setCountingCount(int countingCount) {
-        this.countingCount = countingCount;
+    public void setThumbUrl(String thumbUrl) {
+        this.thumbUrl = thumbUrl;
     }
 
     public int getCountingCount() {
         return countingCount;
     }
 
-    public void setLogo3d(String logo3d) {
-        this.logo3d = logo3d;
+    public void setCountingCount(int countingCount) {
+        this.countingCount = countingCount;
     }
 
     public String getLogo3d() {
         return logo3d;
     }
 
-    public void setEpisode(int episode) {
-        this.episode = episode;
+    public void setLogo3d(String logo3d) {
+        this.logo3d = logo3d;
     }
 
     public int getEpisode() {
         return episode;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setEpisode(int episode) {
+        this.episode = episode;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getCaption() {
         return caption;
     }
 
-    public void setPoints(List<String> points) {
-        this.points = points;
+    public void setCaption(String caption) {
+        this.caption = caption;
     }
 
-    public List<String> getPoints() {
+    public List<Point> getPoints() {
         return points;
     }
 
-    public void setPublishDate(String publishDate) {
-        this.publishDate = publishDate;
+    public void setPoints(List<Point> points) {
+        this.points = points;
     }
 
     public String getPublishDate() {
         return publishDate;
     }
 
-    public void setIsComplex(boolean isComplex) {
-        this.isComplex = isComplex;
+    public void setPublishDate(String publishDate) {
+        this.publishDate = publishDate;
     }
 
     public boolean getIsComplex() {
         return isComplex;
     }
 
-    public void setAttributes(Attributes attributes) {
-        this.attributes = attributes;
+    public void setIsComplex(boolean isComplex) {
+        this.isComplex = isComplex;
     }
 
     public Attributes getAttributes() {
         return attributes;
     }
 
-    public void setItemPk(int itemPk) {
-        this.itemPk = itemPk;
+    public void setAttributes(Attributes attributes) {
+        this.attributes = attributes;
     }
 
     public int getItemPk() {
         return itemPk;
+    }
+
+    public void setItemPk(int itemPk) {
+        this.itemPk = itemPk;
     }
 
     public class Clip {
@@ -345,28 +345,28 @@ public class ItemEntity {
         private int pk;
         private String length;
 
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
         public String getUrl() {
             return url;
         }
 
-        public void setPk(int pk) {
-            this.pk = pk;
+        public void setUrl(String url) {
+            this.url = url;
         }
 
         public int getPk() {
             return pk;
         }
 
-        public void setLength(String length) {
-            this.length = length;
+        public void setPk(int pk) {
+            this.pk = pk;
         }
 
         public String getLength() {
             return length;
+        }
+
+        public void setLength(String length) {
+            this.length = length;
         }
 
     }
@@ -403,12 +403,12 @@ public class ItemEntity {
             this.actor = actor;
         }
 
-        public void setAirDate(String airDate) {
-            this.airDate = airDate;
-        }
-
         public String getAirDate() {
             return airDate;
+        }
+
+        public void setAirDate(String airDate) {
+            this.airDate = airDate;
         }
 
     }
@@ -542,6 +542,45 @@ public class ItemEntity {
 
         public void setPosition(int position) {
             this.position = position;
+        }
+    }
+
+    public class Point {
+        private String image;
+        private String time;
+        private String type;
+        private String title;
+
+        public String getImage() {
+            return image;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public String getTime() {
+            return time;
+        }
+
+        public void setTime(String time) {
+            this.time = time;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
         }
     }
 }
